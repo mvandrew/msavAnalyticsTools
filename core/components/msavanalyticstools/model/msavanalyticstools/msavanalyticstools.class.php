@@ -46,7 +46,7 @@ class msavAnalyticsTools {
 				"corePath"          => $basePath,
 				"modelPath"         => $basePath . "model/",
 				"processorsPath"    => $basePath . "processors/",
-				"templatesPath"     => $basePath . "templatesPath/",
+				"templatesPath"     => $basePath . "templates/",
 				"chunksPath"        => $basePath . "elements/chunks/",
 				"jsUrl"             => $assetsUrl . "javascripts/",
 				"cssUrl"            => $assetsUrl . "css/",
@@ -57,5 +57,31 @@ class msavAnalyticsTools {
 		);
 
 	} // __construct
+
+
+	/**
+	 * Prepares the Google Experiment code.
+	 *
+	 * @param int|mixed $is_active
+	 * @param string $ex_key
+	 *
+	 * @return string
+	 */
+	public function get_google_experiment_code($is_active, $ex_key) {
+
+		$output = '';
+
+		if ( $is_active == '1' && $ex_key != null && strlen($ex_key) > 0 ) {
+
+			ob_start();
+			include ($this->config['templatesPath'] . 'ga_experiment.tpl');
+			$output = ob_get_clean();
+
+			$output = sprintf($output, $ex_key);
+
+		}
+
+		return $output;
+	} // get_google_experiment_code
 
 }
